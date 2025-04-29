@@ -32,5 +32,5 @@ cd /opt/produntion/EAP74-1/bin
 ```sh
 cd /opt/produntion/EAP74-1/bin
 ./jboss-cli.sh deploy path/to/Test.war --server-groups=main-server-group
-``
+```
 
