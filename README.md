@@ -26,6 +26,11 @@ deploy path/to/archive/file
 ```sh
 cd
 cd /opt/produntion/EAP74-1/bin
-./domain.sh -b192.168.231.128 -bmanagement=192.168.231.128
+./domain.sh -b192.168.231.128 -bmanagement=192.168.231.12
 ```
+## Deploy apps in domain mode
+```sh
+cd /opt/produntion/EAP74-1/bin
+./jboss-cli.sh deploy path/to/Test.war --server-groups=main-server-group
+``
 
