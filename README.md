@@ -58,5 +58,10 @@ cd /home/alchemy/<your examples directory>
 unzip TestDatasource.war -d TestDS/
 cp jboss-web.xml TestDS/WEB-INF/
 vi TestDS/WEB-INF/jboss-web.xml
+
+update <jndi-name>java:/jdbc/mariadbDS</jndi-name>
+cd TestDS
+jar -cvf TestDS.war . 
 ```
-`update <jndi-name>java:/jdbc/mariadbDS</jndi-name>`
+1. Use jboss-cli to deploy the created TestDS.war
+
