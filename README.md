@@ -40,5 +40,5 @@ connect
 ```sh
    cd /opt/production/EAP74-1/bin
 ./jboss-cli.sh
-module add --name=my.mariadb.app --module-root-dir=/opt/production/EAP74-1/modules/system/layers/base/ --resources=/path/to/mariadb-java-client-3.5.1.jar --dependencies=javax.api,javax.transaction.api
+module add --name=my.mariadb.app --module-root-dir=/opt/production/EAP74-1/modules/system/layers/base/ --resources=/path/to/mariadb-java-client-3.1.4.jar --dependencies=javax.api,javax.transaction.api
 ```
