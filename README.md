@@ -42,3 +42,12 @@ connect
 ./jboss-cli.sh
 module add --name=my.mariadb.app --module-root-dir=/opt/production/EAP74-1/modules/system/layers/base/ --resources=/path/to/mariadb-java-client-3.1.4.jar --dependencies=javax.api,javax.transaction.api
 ```
+
+## Datasource COnfiguration
+1. Add a jdbc Driver to full profile using jboss cli online
+   ```sh
+   /profile=full/subsystem=datasources/jdbc-driver=mariadb:add(driver-name="mariadb",driver-module-name="my.mariadb.app",driver-class-name="org.mariadb.jdbc.Driver")
+   ```
+2. Add the datasource
+   ```sh
+   ```
