@@ -14,9 +14,10 @@
 ## Deployment with CLI
 1. Open a terminal
 2. Issue the commands as given
+```sh
  cd /opt/production/EAP74-1/bin
  ./jboss-cli.sh
-
+```
 connect <your vm ip>
 
 deploy path/to/archive/file
