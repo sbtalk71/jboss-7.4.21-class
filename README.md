@@ -36,3 +36,10 @@ connect
  deploy path/to/Test.war --server-groups=main-server-group
 ```
 
+## add a module for Datasource jdbc Driver
+```sh
+   cd /opt/production/EAP74-1/bin
+./jboss-cli.sh
+connect 192.168.231.128
+module add --name=com.mariadb.app --resources=/path/to/mariadb-java-client-3.5.1.jar --dependencies=javax.api,javax.transaction.api
+```
