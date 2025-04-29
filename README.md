@@ -31,6 +31,8 @@ cd /opt/produntion/EAP74-1/bin
 ## Deploy apps in domain mode
 ```sh
 cd /opt/produntion/EAP74-1/bin
-./jboss-cli.sh deploy path/to/Test.war --server-groups=main-server-group
+./jboss-cli.sh
+connect
+ deploy path/to/Test.war --server-groups=main-server-group
 ```
 
