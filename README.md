@@ -43,14 +43,14 @@ connect
 module add --name=my.mariadb.app --module-root-dir=/opt/production/EAP74-1/modules/system/layers/base/ --resources=/path/to/mariadb-java-client-3.1.4.jar --dependencies=javax.api,javax.transaction.api
 ```
 
-## Datasource COnfiguration
+## Datasource Configuration
 1. Add a jdbc Driver to full profile using jboss cli online
    ```sh
    /profile=full/subsystem=datasources/jdbc-driver=mariadb:add(driver-name="mariadb",driver-module-name="my.mariadb.app",driver-class-name="org.mariadb.jdbc.Driver")
    ```
 2. Add the datasource
    ```sh
-   /profile=full/subsystem=datasources/data-source=MariadbDS:add(jndi-name="java:/jdbc/maraidbDS",connection-url="jdbc:mariadb://192.168.231.1:3306/empdb",user-name="root",password="welcome",min-pool-size=2,max-pool-size=5,use-ccm=true, driver-name=mariadb)
+   /profile=full/subsystem=datasources/data-source=MariadbDS:add(jndi-name="java:/jdbc/mariadbDS",connection-url="jdbc:mariadb://192.168.231.1:3306/empdb",user-name="root",password="welcome",min-pool-size=2,max-pool-size=5,use-ccm=true, driver-name=mariadb)
    ```
 ## Deploy application using The above Datasource
 ```sh
@@ -63,5 +63,6 @@ update <jndi-name>java:/jdbc/mariadbDS</jndi-name>
 cd TestDS
 jar -cvf TestDS.war . 
 ```
-1. Use jboss-cli to deploy the created TestDS.war
+ Use jboss-cli to deploy the created TestDS.war
+1. Test the application with url : http://192.168.231.128:8080/TestDS/EmpInfo.html
 
