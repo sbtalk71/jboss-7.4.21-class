@@ -21,3 +21,11 @@
 connect <your vm ip>
 
 deploy path/to/archive/file
+
+## Start Server in domain mode
+```sh
+cd
+cd /opt/produntion/EAP74-1/bin
+./domain.sh -b192.168.231.128 -bmanagement=192.168.231.128
+```
+
