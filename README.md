@@ -50,5 +50,5 @@ module add --name=my.mariadb.app --module-root-dir=/opt/production/EAP74-1/modul
    ```
 2. Add the datasource
    ```sh
-   
+   /profile=full/subsystem=datasources/data-source=MariadbDS:add(jndi-name="java:/jdbc/maraidbDS",connection-url="jdbc:mariadb://192.168.231.1:3306/empdb",user-name="root",password="welcome",min-pool-size=2,max-pool-size=5,use-ccm=true, driver-name=mariadb)
    ```
