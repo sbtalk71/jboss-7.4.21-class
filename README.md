@@ -9,3 +9,14 @@
    ```
 
 3. Open browser at http://<your_vm_ip>:8080/Test1/Hello.jsp
+
+
+## Deployment with CLI
+1. Open a terminal
+2. Issue the commands as given
+ cd /opt/production/EAP74-1/bin
+ ./jboss-cli.sh
+
+connect <your vm ip>
+
+deploy path/to/archive/file
