@@ -88,3 +88,49 @@ keytool -genkey -alias mykey -keystore mykeys.pkcs12 -storepass welcome1 -storet
 
 /profile=full/subsystem=undertow/server=default-server/https-listener=https:write-attribute(name=ssl-context, value=examplehttpsSSC)
 ```
+## Using a Security domain for Application Security (File System realm)
+```sh
+cd
+cd /opt/production/EAP74-1/bin
+./jboss-cli.sh
+connect 192.168.231.128
+cd /host=master
+
+./subsystem=elytron/filesystem-realm=exampleFfsRealm:add(path=fs-realm-users,relative-to=jboss.domain.config.dir)
+
+./subsystem=elytron/filesystem-realm=exampleFfsRealm:add-identity(identity=user1)
+
+./subsystem=elytron/filesystem-realm=exampleFfsRealm:set-password(identity=user1, clear={password="passwordUser1"})
+
+./subsystem=elytron/filesystem-realm=exampleFfsRealm:add-identity-attribute(identity=user1, name=Roles, value=["Admin","Guest"])
+```
+**As a result of the above commands, the following entry is made in host.xml**
+```xml
+			<filesystem-realm name="exampleFfsRealm">
+                        <file path="fs-realm" relative-to="jboss.domain.config.dir"/>
+                    </filesystem-realm>
+```
+**copy the block and paste it bewteen `<security-reams>` tag in full profile of domain.xml file**
+1. now execute the following to apply the scurity domain to undertow subsystem
+ ```sh
+cd /profile=full
+./subsystem=elytron/security-domain=exampleSecurityDomain:add(default-realm=exampleFfsRealm,permission-mapper=default-permission-mapper,realms=[{realm=exampleFfsRealm}])
+
+./subsystem=elytron/http-authentication-factory=myHttpAuthFactory:add(http-server-mechanism-factory=global, security-domain=exampleSecurityDomain, mechanism-configurations=[{mechanism-name="BASIC", realm-name="exampleFfsRealm"}])
+
+./subsystem=undertow/application-security-domain=myWebAppDomain:add(http-authentication-factory=myHttpAuthFactory)
+```
+## Deploy a secured app and test
+user: user1
+password: welcome1
+
+1. go to your application repository folder
+2. `unzip SecuredApp.zip`
+3. `cd SecuredApp`
+4. `vi WEB-INF/web.xml and change <role-name>manager</role-name> to <role-name>Admin<role-name>, save and exit`
+5. `vi WEB-INF/jboss-web.xml replace java:jass/.... to myWebAppDomain`, save and exit
+6. `jar -cvf securedApp.war .`
+7. use jboss-cli to deploy the securedApp.war 
+8. check deployment-info
+9. `use http://192.168.231.128:8080/securedApp/`
+10. AUthenticate the user
