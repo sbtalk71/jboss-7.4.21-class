@@ -112,7 +112,7 @@ cd /host=master
 ```
 **copy the block and paste it bewteen `<security-reams>` tag in full profile of domain.xml file**
 1. now execute the following to apply the scurity domain to undertow subsystem
-2. ``sh
+ ```sh
 cd /profile=full
 ./subsystem=elytron/security-domain=exampleSecurityDomain:add(default-realm=exampleFfsRealm,permission-mapper=default-permission-mapper,realms=[{realm=exampleFfsRealm}])
 
