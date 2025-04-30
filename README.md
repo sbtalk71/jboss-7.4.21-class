@@ -104,11 +104,13 @@ cd /host=master
 
 ./subsystem=elytron/filesystem-realm=exampleFfsRealm:add-identity-attribute(identity=user1, name=Roles, value=["Admin","Guest"])
 ```
-** As a result of the above commands, the following entry is made in host.xml**
+**As a result of the above commands, the following entry is made in host.xml**
+```xml
 			<filesystem-realm name="exampleFfsRealm">
                         <file path="fs-realm" relative-to="jboss.domain.config.dir"/>
                     </filesystem-realm>
-**copy the block and paste it bewteen <security-reams> tag in full profile of domain.xml file**
+```
+**copy the block and paste it bewteen `<security-reams>` tag in full profile of domain.xml file**
 1. now execute the following to apply the scurity domain to undertow subsystem
 2. ``sh
 cd /profile=full
