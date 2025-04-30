@@ -66,7 +66,16 @@ jar -cvf TestDS.war .
  Use jboss-cli to deploy the created TestDS.war
 1. Test the application with url : http://192.168.231.128:8080/TestDS/EmpInfo.html
 
-## SSL Key store command
+## SSL commands
 ```sh
 keytool -genkey -alias mykey -keystore mykeys.pkcs12 -storepass welcome1 -storetype PKCS12 -keyalg RSA -validity 365
+
+/host=master/subsystem=elytron/key-store=exampleKeyStore:add(path=mykeys.pkcs12,credential-reference={clear-text=welcome1},type=PKCS12)
+/host=master/subsystem=elytron/key-manager=exampleKeyManager:add(key-store=exampleKeyStore,credential-reference={clear-text=welcome1})
+
+/host=master/subsystem=elytron/server-ssl-context=examplehttpsSSC:add(key-manager=exampleKeyManager, protocols=["TLSv1.2"])
+
+/host=master/core-service=management/management-interface=http-interface:write-attribute(name=ssl-context, value=examplehttpsSSC)
+
+/host=master/core-service=management/management-interface=http-interface:write-attribute(name=secure-port,value=9993)
 ```
