@@ -66,3 +66,7 @@ jar -cvf TestDS.war .
  Use jboss-cli to deploy the created TestDS.war
 1. Test the application with url : http://192.168.231.128:8080/TestDS/EmpInfo.html
 
+## SSL Key store command
+```sh
+keytool -genkey -alias mykey -keystore mykeys.pkcs12 -storepass welcome1 -storetype PKCS12 -keyalg RSA -validity 365
+```
