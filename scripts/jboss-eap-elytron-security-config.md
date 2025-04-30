@@ -1,21 +1,26 @@
 ## Create a FIleSystemRealm
-
+```sh
 /subsystem=elytron/filesystem-realm=exampleSecurityRealm:add(path=fs-realm-users,relative-to=jboss.server.config.dir)
-
+```
 Add a User:
-
+```sh
 /subsystem=elytron/filesystem-realm=exampleSecurityRealm:add-identity(identity=user1)
-
+```
 Set Password:
+```sh
 /subsystem=elytron/filesystem-realm=exampleSecurityRealm:set-password(identity=user1, clear={password="passwordUser1"})
-
+```
 # roles
+```sh
 /subsystem=elytron/filesystem-realm=exampleSecurityRealm:add-identity-attribute(identity=user1, name=Roles, value=["Admin","Guest"])
-{"outcome" => "success"}
-Security Domain which references the filesystem-realm:
-/subsystem=elytron/security-domain=exampleSecurityDomain:add(default-realm=exampleSecurityRealm,permission-mapper=default-permission-mapper,realms=[{realm=exampleSecurityRealm}])
+```
 
+Security Domain which references the filesystem-realm:
+```sh
+/subsystem=elytron/security-domain=exampleSecurityDomain:add(default-realm=exampleSecurityRealm,permission-mapper=default-permission-mapper,realms=[{realm=exampleSecurityRealm}])
+```
 Verify:
+```sh
 /subsystem=elytron/security-domain=exampleSecurityDomain:read-identity(name=user1)
 {
     "outcome" => "success",
@@ -31,11 +36,15 @@ Verify:
         ]
     }
 }
+```
 
 Http Authentication Factory:
+```sh
 /subsystem=elytron/http-authentication-factory=myHttpAuthFactory:add(http-server-mechanism-factory=global, security-domain=exampleSecurityDomain, mechanism-configurations=[{mechanism-name="BASIC", realm-name="exampleSecurityRealm"}])
-
+```
+```sh
 /subsystem=undertow/application-security-domain=myWebAppDomain:add(http-authentication-factory=myHttpAuthFactory)
+```
 
 ### Creating an encrypted filesystem-realm in Elytron 
 
