@@ -120,3 +120,17 @@ cd /profile=full
 
 ./subsystem=undertow/application-security-domain=myWebAppDomain:add(http-authentication-factory=myHttpAuthFactory)
 ```
+## Deploy a secured app and test
+user: user1
+password: welcome1
+
+1. go to your application repository folder
+2. unzip SecuredApp.zip
+3. cd SecuredApp
+4. vi WEB-INF/web.xml and change <role-name>manager</role-name> to <role-name>Admin<role-name>, save and exit
+5. vi WEB-INF/jboss-web.xml replace java:jass/.... to myWebAppDomain, save and exit
+6. jar -cvf securedApp.war .
+7. use jboss-cli to deploy the securedApp.war 
+8. check deployment-info
+9. use http://192.168.231.128:8080/securedApp/
+10. AUthenticate the user
