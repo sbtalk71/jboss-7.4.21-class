@@ -86,5 +86,5 @@ keytool -genkey -alias mykey -keystore mykeys.pkcs12 -storepass welcome1 -storet
 
 /profile=full/subsystem=elytron/server-ssl-context=examplehttpsSSC:add(key-manager=exampleKeyManager, protocols=["TLSv1.2"])
 
-/profile=full/core-service=management/management-interface=http-interface:write-attribute(name=ssl-context, value=examplehttpsSSC)
+/profile=full/subsystem=undertow/server=default-server/https-listener=https:write-attribute(name=ssl-context, value=examplehttpsSSC)
 ```
