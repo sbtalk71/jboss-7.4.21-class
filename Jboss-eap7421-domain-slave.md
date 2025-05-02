@@ -16,9 +16,10 @@ $JBOSS_HOME/bin domain.sh -b <IP_Address> -bmanagement=<IP_ADDRESS>
 ```
 
 ### Setup Host side (Machine2)
-1. We are changing `host.xml` in the domain directory
-2. Open `host.xml` in an editor
-3. find the element :
+1. `$JBOSS_HOME/bin domain.sh -b <IP_Address> -bmanagement=<IP_ADDRESS>`
+2. We are changing `host.xml` in the domain directory
+3. Open `host.xml` in an editor
+4. find the element :
 ```xml
 <domain-controller>
         <local/>
