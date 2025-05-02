@@ -134,3 +134,10 @@ password: welcome1
 8. check deployment-info
 9. `use http://192.168.231.128:8080/securedApp/`
 10. Authenticate the user
+    
+##  Create JMS Resources in full profile
+```sh
+/profile=full/subsystem=messaging-activemq/server=default/jms-queue=MyQueue:add(entries=["java:/jms/queue/MyQueue"])
+/profile=full/subsystem=messaging-activemq/server=default/jms-topic=MyTopic:add(entries=["java:/jms/topic/MyTopic"])
+/profile=full/subsystem=messaging-activemq/server=default/connection-factory=MyConnectionFactory:add(entries=["java:/jms/MyConnectionFactory"],connectors=["in-vm"])
+```
