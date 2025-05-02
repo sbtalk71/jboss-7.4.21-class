@@ -1,0 +1,39 @@
+embed-server --server-config=standalone-full-ha.xml
+# Change ActiveMQ Artemis cluster <password>
+/subsystem=messaging-activemq/server=default:write-attribute(name=cluster-password, value=welcome1)
+
+# Set location of journal for pair A - change path to messaging-journal-a directory based on your environment
+/subsystem=messaging-activemq/server=default/path=bindings-directory:write-attribute(name=path,value=/home/training/data/messaging-journal-a/bindings)
+/subsystem=messaging-activemq/server=default/path=journal-directory:write-attribute(name=path,value=/home/training/data/messaging-journal-a/journal)
+/subsystem=messaging-activemq/server=default/path=large-messages-directory:write-attribute(name=path,value=/home/training/data/messaging-journal-a/largemessages)
+/subsystem=messaging-activemq/server=default/path=paging-directory:write-attribute(name=path,value=/home/training/data/messaging-journal-a/paging)
+
+# Set "default" Artemis broker as primary
+/subsystem=messaging-activemq/server=default/ha-policy=shared-store-master:add(failover-on-server-shutdown=true)
+reload
+
+# Add secondary broker
+/subsystem=messaging-activemq/server=secondary:add(security-enabled=true, elytron-domain=ApplicationDomain)
+
+# Change ActiveMQ Artemis cluster <password>
+/subsystem=messaging-activemq/server=secondary:write-attribute(name=cluster-password, value=welcome1)
+
+# Create http-connector/http-acceptor pointing to this broker
+/subsystem=messaging-activemq/server=secondary/http-acceptor=acceptor:add(http-listener=default)
+/subsystem=messaging-activemq/server=secondary/http-connector=connector:add(endpoint=acceptor,socket-binding=http)
+
+# Create a broadcast group to advertise the broker in the cluster and a corresponding discovery group to be used by the cluster connection to discover other brokers, enabling the formation of the cluster.
+/subsystem=messaging-activemq/server=secondary/jgroups-broadcast-group=bg-group1:add(jgroups-cluster=activemq-cluster, connectors=[connector])
+/subsystem=messaging-activemq/server=secondary/jgroups-discovery-group=dg-group1:add(jgroups-cluster=activemq-cluster)
+/subsystem=messaging-activemq/server=secondary/cluster-connection=my-cluster:add(cluster-connection-address=jms,connector-name=connector,discovery-group=dg-group1)
+
+# Set "secondary" Artemis broker as secondary
+/subsystem=messaging-activemq/server=secondary/ha-policy=shared-store-slave:add(failover-on-server-shutdown=true)
+
+# Set location of journal for pair B - change path to messaging-journal-a directory based on your environment
+/subsystem=messaging-activemq/server=secondary/path=bindings-directory:write-attribute(name=path,value=/home/training/data/messaging-journal-b/bindings)
+/subsystem=messaging-activemq/server=secondary/path=journal-directory:write-attribute(name=path,value=/home/training/data/messaging-journal-b/journal)
+/subsystem=messaging-activemq/server=secondary/path=large-messages-directory:write-attribute(name=path,value=/home/training/data/messaging-journal-b/largemessages)
+/subsystem=messaging-activemq/server=secondary/path=paging-directory:write-attribute(name=path,value=/home/training/data/messaging-journal-b/paging)
+# Shutdown the server
+#shutdown
