@@ -141,3 +141,32 @@ password: welcome1
 /profile=full/subsystem=messaging-activemq/server=default/jms-topic=MyTopic:add(entries=["java:/jms/topic/MyTopic"])
 /profile=full/subsystem=messaging-activemq/server=default/connection-factory=MyConnectionFactory:add(entries=["java:/jms/MyConnectionFactory"],connectors=["in-vm"])
 ```
+## Deploy JMS Sample App
+1. `unzip JMSSampleApplication_Web.war -d JmsWebApp/`
+2. copy jboss-web.xml to JmsWebApp/WEB-INF/
+3. edit jboss-web.xml
+4. overwrite the existing content between `<jboss-web> </jboss-web>` tag with
+```xml
+<resource-ref>
+        <res-ref-name>jms/qcf</res-ref-name>
+        <jndi-name>java:/jms/MyConnectionFactory</jndi-name>
+    </resource-ref>
+	<resource-ref>
+        <res-ref-name>jms/queue_sender</res-ref-name>
+        <jndi-name>java:/jms/queue/MyQueue</jndi-name>
+    </resource-ref>
+	<resource-ref>
+        <res-ref-name>jms/queue_receiver</res-ref-name>
+        <jndi-name>java:/jms/queue/MyQueue</jndi-name>
+    </resource-ref>
+```
+Create a .war file from the JmsWebApp's content
+`cd JmsWebApp/`
+`java -jar JmsWebApp.war .`
+
+in another terminal use jboss-cli.sh to deploy the application:
+```sh
+./jboss-cli.sh
+connect <ip>
+deploy <the location of JmsWebApp.war> --server-groups=main-server-group
+```
