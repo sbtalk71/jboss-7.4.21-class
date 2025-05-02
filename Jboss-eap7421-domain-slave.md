@@ -16,9 +16,13 @@ $JBOSS_HOME/bin domain.sh -b <IP_Address> -bmanagement=<IP_ADDRESS>
 ```
 
 ### Setup Host side (Machine2)
-1. We are changing `host.xml` in the domain directory
-2. Open `host.xml` in an editor
-3. find the element :
+1. 1. Create an admin user in Management Realm
+```sh
+$JBOSS_HOME/bin/add-user.sh -u jboss -p welcome1 -g admin
+```
+2. We are changing `host.xml` in the domain directory
+3. Open `host.xml` in an editor
+4. find the element :
 ```xml
 <domain-controller>
         <local/>
