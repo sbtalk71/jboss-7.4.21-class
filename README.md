@@ -52,7 +52,7 @@ module add --name=my.mariadb.app --module-root-dir=/opt/production/EAP74-1/modul
    ```sh
    /profile=full/subsystem=datasources/data-source=MariadbDS:add(jndi-name="java:/jdbc/mariadbDS",connection-url="jdbc:mariadb://192.168.231.1:3306/empdb",user-name="root",password="welcome",min-pool-size=2,max-pool-size=5,use-ccm=true, driver-name=mariadb)
    ```
-## Deploy application using The above Datasource
+## Deploy application using the above Datasource
 ```sh
 cd /home/alchemy/<your examples directory>
 unzip TestDatasource.war -d TestDS/
@@ -106,12 +106,12 @@ cd /host=master
 ```
 **As a result of the above commands, the following entry is made in host.xml**
 ```xml
-			<filesystem-realm name="exampleFfsRealm">
-                        <file path="fs-realm" relative-to="jboss.domain.config.dir"/>
-                    </filesystem-realm>
+	<filesystem-realm name="exampleFfsRealm">
+      <file path="fs-realm" relative-to="jboss.domain.config.dir"/>
+    </filesystem-realm>
 ```
-**copy the block and paste it bewteen `<security-reams>` tag in full profile of domain.xml file**
-1. now execute the following to apply the scurity domain to undertow subsystem
+**copy the block and paste it bewteen `<security-relams>` tag in full profile of domain.xml file**
+1. now execute the following in CLI terminal to apply the scurity domain to undertow subsystem:
  ```sh
 cd /profile=full
 ./subsystem=elytron/security-domain=exampleSecurityDomain:add(default-realm=exampleFfsRealm,permission-mapper=default-permission-mapper,realms=[{realm=exampleFfsRealm}])
@@ -133,4 +133,4 @@ password: welcome1
 7. use jboss-cli to deploy the securedApp.war 
 8. check deployment-info
 9. `use http://192.168.231.128:8080/securedApp/`
-10. AUthenticate the user
+10. Authenticate the user
