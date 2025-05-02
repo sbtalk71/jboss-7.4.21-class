@@ -145,7 +145,8 @@ password: welcome1
 unzip JMSSampleApplication_Web.war -d JmsWebApp/
 copy jboss-web.xml to JmsWebApp/WEB-INF/
 edit jboss-web.xml
-overwrite the existing content between <jboss-web> </jboss-web> tag with
+overwrite the existing content between `<jboss-web> </jboss-web>` tag with
+```xml
 <resource-ref>
         <res-ref-name>jms/qcf</res-ref-name>
         <jndi-name>java:/jms/MyConnectionFactory</jndi-name>
@@ -158,7 +159,7 @@ overwrite the existing content between <jboss-web> </jboss-web> tag with
         <res-ref-name>jms/queue_receiver</res-ref-name>
         <jndi-name>java:/jms/queue/MyQueue</jndi-name>
     </resource-ref>
-	
+```
 Create a .war file from the JmsWebApp's content
 cd JmsWebApp/
 java -jar JmsWebApp.war .
