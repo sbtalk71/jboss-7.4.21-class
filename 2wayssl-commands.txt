@@ -1,0 +1,36 @@
+## Create the Server Trust Store
+/host=master/subsystem=elytron/key-store=exampleServerTrustStore:add(path=server.truststore,relative-to=jboss.domain.config.dir,credential-reference={clear-text=secret})
+
+/host=master/subsystem=elytron/key-store=exampleServerTrustStore:import-certificate(alias=client,path=client.cer,relative-to=jboss.domain.config.dir,credential-reference={clear-text=secret},trust-cacerts=true,validate=false)
+
+/host=master/subsystem=elytron/key-store=exampleServerTrustStore:store()
+
+## COnfigure trust manager
+/host=master/subsystem=elytron/trust-manager=exampleTLSTrustManager:add(key-store=exampleServerTrustStore)
+
+## We already have the server keystore
+/host=master/subsystem=elytron/key-store=exampleKeyStore:export-certificate(alias=mykey,path=server.cer,pem=true,relative-to=jboss.domain.config.dir)
+
+##import the server.cer exported above into client's trust store
+keytool -import -file server.cer -alias server -keystore client.truststore.p12 -storepass secret
+
+## SSL Context for 2 way ssl
+/host=master/subsystem=elytron/server-ssl-context=exampleServer2waySSLContext:add(key-manager=exampleKeyManager,trust-manager=exampleTLSTrustManager,need-client-auth=true)
+
+
+## For slave node
+/host=slave/subsystem=elytron/key-store=exampleSlaveKeyStore:add(path=client.keystore.pkcs12,relative-to=jboss.domain.config.dir,credential-reference={clear-text=secret})
+
+/host=slave/subsystem=elytron/key-store=exampleSlaveTrustStore:add(path=client.truststore.p12,relative-to=jboss.domain.config.dir,credential-reference={clear-text=secret})
+
+/host=slave/subsystem=elytron/trust-manager=exampleTLSTrustManager:add(key-store=exampleSlaveTrustStore)
+
+/host=slave/subsystem=elytron/key-manager=exampleTLSKeyManager:add(key-store=exampleSlaveKeyStore,credential-reference={clear-text=secret})
+
+/host=slave/subsystem=elytron/server-ssl-context=exampleServer2waySSLContext:add(key-manager=exampleTLSKeyManager,trust-manager=exampleTLSTrustManager,need-client-auth=true)
+
+
+
+
+
+

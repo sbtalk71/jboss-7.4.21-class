@@ -1,0 +1,28 @@
+# Change ActiveMQ Artemis cluster <password>
+/subsystem=messaging-activemq/server=default:write-attribute(name=cluster-password, value=welcome1)
+
+# Set location of journal for pair B - change path to messaging-journal-b directory based on your environment
+/subsystem=messaging-activemq/server=default/path=bindings-directory:write-attribute(name=path,value=/home/alchemy/data/messaging-journal-a/bindings)
+/subsystem=messaging-activemq/server=default/path=journal-directory:write-attribute(name=path,value=/home/alchemy/data/messaging-journal-a/journal)
+
+/subsystem=messaging-activemq/server=default/path=large-messages-directory:write-attribute(name=path,value=/home/alchemy/data/messaging-journal-a/largemessages)
+/subsystem=messaging-activemq/server=default/path=paging-directory:write-attribute(name=path,value=/home/alchemy/data/messaging-journal-a/paging)
+
+# Set "default" Artemis broker as primary
+/subsystem=messaging-activemq/server=default/ha-policy=shared-store-master:add(failover-on-server-shutdown=true)
+reload
+
+===========================================================================
+
+# Change ActiveMQ Artemis cluster <password>
+/subsystem=messaging-activemq/server=default:write-attribute(name=cluster-password, value=welcome1)
+
+
+# Set "secondary" Artemis broker as secondary
+/subsystem=messaging-activemq/server=default/ha-policy=shared-store-slave:add(failover-on-server-shutdown=true)
+
+# Set location of journal for pair A - change path to messaging-journal-a directory based on your environment
+/subsystem=messaging-activemq/server=default/path=bindings-directory:write-attribute(name=path,value=/home/alchemy/data/messaging-journal-a/bindings)
+/subsystem=messaging-activemq/server=default/path=journal-directory:write-attribute(name=path,value=/home/alchemy/data/messaging-journal-a/journal)
+/subsystem=messaging-activemq/server=default/path=large-messages-directory:write-attribute(name=path,value=/home/alchemy/data/messaging-journal-a/largemessages)
+/subsystem=messaging-activemq/server=default/path=paging-directory:write-attribute(name=path,value=/home/alchemy/data/messaging-journal-a/paging)
