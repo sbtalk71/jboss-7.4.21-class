@@ -1,0 +1,11 @@
+1. generate the client keystore with keypair and certificates
+
+2. export the client certificate to a file
+3. import the client certificate in a server truststore file
+4. create a trust manager
+
+5. We already have the server keystore and key maager
+6. modify the sslcontext to include the trust manager
+7. export the certificate from the server keystore
+8. import the certificate in the client truststore
+9. configure the 2 way ssl for each slave

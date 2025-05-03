@@ -1,0 +1,48 @@
+Two way SSL for Domain and Hosts
+
+/host=master/subsystem=elytron/key-store=twoWayKS:add(path=/path/to/server.keystore.jks,credential-reference={clear-text=secret},type=JKS)
+
+/host=master/subsystem=elytron/key-store=twoWayTS:add(path=/path/to/server.truststore.jks,credential-reference={clear-text=secret},type=JKS)
+
+/host=master/subsystem=elytron/key-manager=twoWayKM:add(key-store=twoWayKS,credential-reference={clear-text=secret})
+
+/host=master/subsystem=elytron/trust-manager=twoWayTM:add(key-store=twoWayTS)
+
+/host=master/subsystem=elytron/server-ssl-context=twoWaySSC:add(key-manager=twoWayKM,protocols=["TLSv1.2"],trust-manager=twoWayTM,want-client-auth=true,need-client-auth=true)
+
+/host=master/core-service=management/management-interface=http-interface:write-attribute(name=ssl-context, value=twoWaySSC)
+
+
+Configure an authentication context and domain controller location on each slave host controller. The following example configuration shows a domain controller that exists on localhost.
+
+/host=slave1/subsystem=elytron/authentication-context=slaveHostSSLContext:add()
+
+/host=slave1/subsystem=elytron/authentication-configuration=slaveHostSSLConfiguration:add()
+
+/host=slave1/subsystem=elytron/authentication-configuration=slaveHostSSLConfiguration:write-attribute(name=sasl-mechanism-selector,value=DIGEST-MD5)
+
+/host=slave1/subsystem=elytron/authentication-configuration=slaveHostSSLConfiguration:write-attribute(name=authentication-name,value=slave)
+
+/host=slave1/subsystem=elytron/authentication-configuration=slaveHostSSLConfiguration:write-attribute(name=realm,value=ManagementRealm)
+
+/host=slave1/subsystem=elytron/authentication-configuration=slaveHostSSLConfiguration:write-attribute(name=credential-reference,value={clear-text=password1!})
+
+/host=slave1/subsystem=elytron/authentication-context=slaveHostSSLContext:write-attribute(name=match-rules,value=[{match-host=localhost,authentication-configuration=slaveHostSSLConfiguration}]
+
+/host=slave1:write-remote-domain-controller(host=localhost,port=9990,protocol=remote,authentication-context=slaveHostSSLContext)
+
+
+onfigure each slave host controller to use SSL or TLS. The following commands configure the slave host controller key-store, key-manager, trust-manager, client-ssl-context, and authentication-context for the server keystore and truststore. Further, the example shows a domain controller that exists on localhost.
+
+/host=slave1/subsystem=elytron/key-store=twoWayKS:add(path=/path/to/client.keystore.jks,credential-reference={clear-text=secret},type=JKS)
+
+/host=slave1/subsystem=elytron/key-store=twoWayTS:add(path=/path/to/client.truststore.jks,credential-reference={clear-text=secret},type=JKS)
+
+/host=slave1/subsystem=elytron/key-manager=twoWayKM:add(key-store=twoWayKS,credential-reference={clear-text=secret})
+
+/host=slave1/subsystem=elytron/trust-manager=twoWayTM:add(key-store=twoWayTS)
+
+/host=slave1/subsystem=elytron/client-ssl-context=twoWayCSC:add(key-manager=twoWayKM,protocols=["TLSv1.2"],trust-manager=twoWayTM)
+
+/host=slave1/subsystem=elytron/authentication-context=slaveHostSSLContext:write-attribute(name=match-rules,value=[{match-host=localhost,authentication-configuration=slaveHostSSLConfiguration,ssl-context=twoWayCSC}])
+

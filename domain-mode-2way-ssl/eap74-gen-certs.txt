@@ -1,0 +1,52 @@
+## Generate a client certificate.
+$ keytool -genkeypair -alias client -keyalg RSA -keysize 2048 -validity 365 -keystore client.keystore.pkcs12 -dname "CN=client" -keypass secret -storepass secret
+
+# Export the client certificate to a file.
+$ keytool -exportcert  -keystore client.keystore.pkcs12 -alias client -keypass secret -storepass secret -file /opt/production/EAP74-1/standalone/configuration/client.cer
+
+Certificate stored in file /opt/production/EAP74-1/standalone/configuration/client.cer
+
+## Configure a trust store with a client certificate by using the management CLI.
+1. Create a server trust store to store the client certificate to trust.
+/subsystem=elytron/key-store=exampleServerTrustStore:add(path=server.truststore,relative-to=jboss.server.config.dir,credential-reference={clear-text=secret})
+
+
+2. Import the client certificate to the server trust store by specifying the client certificate alias. Only the clients that present a certificate that the server’s trust store trusts can connect to the server.
+
+/subsystem=elytron/key-store=exampleServerTrustStore:import-certificate(alias=client,path=client.cer,relative-to=jboss.server.config.dir,credential-reference={clear-text=serverTrustSecret},trust-cacerts=true,validate=false)
+
+Export the client certificate to a trust store file.
+/subsystem=elytron/key-store=exampleServerTrustStore:store()
+
+Configure a trust manager to verify the client certificate during the TLS handshake.
+/subsystem=elytron/trust-manager=exampleTLSTrustManager:add(key-store=exampleServerTrustStore)
+
+Configuring a server certificate for two-way SSL/TLS 
+
+/subsystem=elytron/key-store=exampleServerKeyStore:add(path=server.keystore.pkcs12,relative-to=jboss.server.config.dir,credential-reference={clear-text=secret},type=PKCS12)
+
+
+/subsystem=elytron/key-store=exampleServerKeyStore:generate-key-pair(alias=localhost,algorithm=RSA,key-size=2048,validity=365,credential-reference={clear-text=secret},distinguished-name="CN=localhost")
+
+
+/subsystem=elytron/key-store=exampleServerKeyStore:store()
+
+/subsystem=elytron/key-store=exampleServerKeyStore:export-certificate(alias=localhost,path=server.cer,pem=true, relative-to=jboss.server.config.dir)
+
+/subsystem=elytron/key-manager=exampleServerKeyManager:add(credential-reference={clear-text=secret},key-store=exampleServerKeyStore)
+
+keytool -import -file /opt/production/EAP-1/standalone/configuration/server.cer -alias server -keystore client.truststore.p12 -storepass secret
+
+===
+/subsystem=elytron/server-ssl-context=exampleServerSSLContext:add(key-manager=exampleServerKeyManager,trust-manager=exampleTLSTrustManager,need-client-auth=true)
+
+
+/core-service=management/management-interface=http-interface:write-attribute(name=ssl-context,value=exampleServerSSLContext)
+
+/core-service=management/management-interface=http-interface:write-attribute(name=secure-socket-binding, value=management-https)
+
+reload
+
+...
+Accept certificate? [N]o, [T]emporarily, [P]ermanently :
+curl --verbose --location --cacert <server_certificate> --cert <client_keystore>:<password> --cert-type P12 https://localhost:9993
