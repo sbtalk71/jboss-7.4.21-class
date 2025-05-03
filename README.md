@@ -170,3 +170,13 @@ in another terminal use jboss-cli.sh to deploy the application:
 connect <ip>
 deploy <the location of JmsWebApp.war> --server-groups=main-server-group
 ```
+## Apache Server commands
+1. download apache server for windows 64bit from https://www.apachelounge.com/download/VS17/binaries/httpd-2.4.63-250207-win64-VS17.zip
+2. extract Apache24 from the Zip on c:\
+3. Open a cmd terminal as Administrator
+4. cd c:\Apache24\bin
+5. httpd -k install (installe Windows Service)
+6. httpd -k start
+7. httpd -k restart
+8. httpd -k stop
+9. httpd -k uninstall
