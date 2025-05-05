@@ -1,0 +1,42 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>com.demo</groupId>
+  <artifactId>jakarta-ee8-apps</artifactId>
+  <version>0.0.1-SNAPSHOT</version>
+  <packaging>pom</packaging>
+  <name>jakarta-ee8-apps</name>
+  <description>This project containes app with javax.* package applicable to Jboss 7.4.21</description>
+  <properties>
+  <maven.compiler.source>17</maven.compiler.source>
+  <maven.compiler.target>17</maven.compiler.target>
+  </properties>
+  <dependencies>
+  <dependency>
+    <groupId>jakarta.platform</groupId>
+    <artifactId>jakarta.jakartaee-api</artifactId>
+    <version>8.0.0</version>
+    <scope>provided</scope>
+</dependency>
+  </dependencies>
+  <modules>
+  	<module>ha-singleton-deployment</module>
+  	<module>ejb-in-ear</module>
+  	<module>ejb-in-ear/ear</module>
+  	<module>ejb-in-ear/ejb</module>
+  	<module>ejb-in-ear/web</module>
+  	<module>ha-singleton-service</module>
+  	<module>helloworld-jms</module>
+  	<module>helloworld-mdb</module>
+  	<module>logging</module>
+  </modules>
+  
+  <build>
+<plugins>
+<plugin>
+ <groupId>org.apache.maven.plugins</groupId>
+    <artifactId>maven-war-plugin</artifactId>
+    <version>3.2.1</version>
+</plugin>
+</plugins>
+</build>
+</project>

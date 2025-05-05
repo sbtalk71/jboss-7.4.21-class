@@ -1,0 +1,2 @@
+org\jboss\as\quickstarts\ejbinwar\controller\Greeter.class
+org\jboss\as\quickstarts\ejbinwar\ejb\GreeterEJB.class

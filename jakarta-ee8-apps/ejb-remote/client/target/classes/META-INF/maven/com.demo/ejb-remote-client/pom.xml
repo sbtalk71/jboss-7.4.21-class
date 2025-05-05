@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<parent>
+		<groupId>com.demo</groupId>
+		<artifactId>ejb-remote</artifactId>
+		<version>0.0.1-SNAPSHOT</version>
+	</parent>
+
+	<artifactId>ejb-remote-client</artifactId>
+	<packaging>jar</packaging>
+	<name>Quickstart: ejb-remote - client</name>
+	<description>This project demonstrates how to access an EJB from a remote
+		client; this is the client POM file</description>
+
+	<properties>
+		<http>false</http>
+	</properties>
+
+	<dependencies>
+		<!--
+		https://mvnrepository.com/artifact/org.wildfly/wildfly-ejb-client-bom -->
+		
+		<dependency>
+			<groupId>${project.groupId}</groupId>
+			<artifactId>ejb-remote-server-side</artifactId>
+			<version>${project.version}</version>
+			<type>ejb-client</type>
+		</dependency>
+
+	</dependencies>
+
+	<build>
+		<plugins>
+
+			<!-- Add the maven exec plug-in to allow us to run a java program
+                via maven -->
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>exec-maven-plugin</artifactId>
+				<configuration>
+					<executable>java</executable>
+					<workingDirectory>
+						${project.build.directory}/exec-working-directory</workingDirectory>
+					<arguments>
+						<argument>-Dhttp=${http}</argument>
+						<argument>-classpath</argument>
+						<classpath></classpath>
+						<argument>
+							org.jboss.as.quickstarts.ejb.remote.client.RemoteEJBClient</argument>
+					</arguments>
+					<!--<detail>true</detail>-->
+				</configuration>
+			</plugin>
+			<!-- build standalone exe jar -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-assembly-plugin</artifactId>
+				<configuration>
+					<descriptorRefs>
+						<descriptorRef>jar-with-dependencies</descriptorRef>
+					</descriptorRefs>
+					<archive>
+						<manifest>
+							<mainClass>
+								org.jboss.as.quickstarts.ejb.remote.client.RemoteEJBClient</mainClass>
+						</manifest>
+						<manifestEntries>
+							<Multi-Release>true</Multi-Release>
+						</manifestEntries>
+					</archive>
+				</configuration>
+			</plugin>
+		</plugins>
+
+	</build>
+
+</project>
